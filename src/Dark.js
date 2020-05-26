@@ -17,7 +17,8 @@ var timeDelay = 2
 
 // immerseDom 沉浸点击 dom
 // bgImageDom 背景图片 dom
-var appDom, immerseDom, bgImageDom
+// contentDom 内容节点 dom
+var appDom, immerseDom, bgImageDom, contentDom
 
 // 网页加载完成，获取页面 dom 节点
 window.onload = function () {
@@ -33,6 +34,9 @@ window.onload = function () {
         immerseDom.title = "点击开启背景切换"
         // 背景图片节点
         bgImageDom = appDom.children[0].children[1].children[1].children[0].children[0].children[1]
+        // 内容节点
+        contentDom = bgImageDom.children[0].children[0].children[0].children[0].children[2]
+
     }, timeDelay * 1000)
 }
 
@@ -42,6 +46,8 @@ function immerseClick() {
     setBgImage()
     // 隐藏设置背景图后的出现的白边
     hideWhiteBorder()
+    // 隐藏文中首页与末尾图片
+    hideImages()
 }
 
 // 设置背景图片
@@ -64,4 +70,10 @@ function hideWhiteBorder() {
     let leftBorderDom = appDom.children[0].children[0]
     topBorderDom.style.height = '60px'
     leftBorderDom.style.width = '379px'
+}
+
+// 隐藏文中首页与末尾图片
+function hideImages() {
+    contentDom.children[0].style.display = "none"
+    contentDom.children[contentDom.children.length - 2].style.display = "none"
 }
