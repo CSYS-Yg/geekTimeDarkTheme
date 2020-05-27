@@ -8,9 +8,28 @@
 
 // background-image: url(https://gitee.com/Yx_z/figurebed/raw/master/vscode/VsCode.jpg);
 
+
 // 配置项
+
+var config = {
+    //背景（图床地址）
+    bg: 'https://gitee.com/Yx_z/figurebed/raw/master/vscode/vscode-bg.png',
+    // 延时时间（单位/秒）
+    timeDelay: 2
+    // 必须
+    // 文中主要内容字体颜色
+    // 文中小标题颜色
+    // 文中代码块背景色与边框色
+    // 文中加粗字体颜色
+    // 非必须
+    // 左右按钮切换背景色
+    // 播放器背景色与边框色
+    // 小播放器背景色与边框色
+    // 退出沉浸模式阅读背景色
+}
 // 背景图片（图床地址）
-var bg = 'https://gitee.com/Yx_z/figurebed/raw/master/vscode/VsCode.jpg'
+var bg = 'https://gitee.com/Yx_z/figurebed/raw/master/vscode/vscode-bg.png'
+
 // 设置延时时间（单位/秒）
 var timeDelay = 2
 
@@ -48,6 +67,10 @@ function immerseClick() {
     hideWhiteBorder()
     // 隐藏文中首页与末尾图片
     hideImages()
+    // 设置音频属性
+    setVideoStyle()
+    // 找出多个代码块文本节点
+    getPre()
 }
 
 // 设置背景图片
@@ -61,7 +84,7 @@ function setBgImage(image) {
     bgImageDom.style.backgroundImage = "url(" + imageUrl + ")";//设置背景图的的地址
     bgImageDom.style.backgroundRepeat = "no-repeat";//设置背景不平铺
     bgImageDom.style.backgroundPosition = "center";//设置背景图的位置
-    bgImageDom.style.backgroundSize = "cover";//设置背景图像的尺寸
+    bgImageDom.style.backgroundSize = "auto";//设置背景图像的尺寸
 }
 
 // 隐藏设置背景图后的出现的白边
@@ -76,4 +99,19 @@ function hideWhiteBorder() {
 function hideImages() {
     contentDom.children[0].style.display = "none"
     contentDom.children[contentDom.children.length - 2].style.display = "none"
+}
+
+// 设置音频属性
+function setVideoStyle() {
+    let videoDom = contentDom.children[1]
+    videoDom.style.backgroundColor = '#282c34'
+    videoDom.style.border = '1px solid #282c34'
+}
+
+// 找出多个代码块文本节点
+function getPre() {
+    let preList = contentDom.querySelectorAll('[data-slate-type="pre"]')
+    preList.forEach(item => {
+        item.style.backgroundColor = '#282c34'
+    });
 }
