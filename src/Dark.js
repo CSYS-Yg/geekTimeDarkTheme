@@ -84,7 +84,7 @@ function getDom() {
     // 沉浸事件节点
     immerseDom = appDom.children[0].children[1].children[2].children[2]
     // 添加沉浸点击监控
-    immerseDom.addEventListener('click', immerseClick, { once: true });
+    immerseDom.addEventListener('click', immerseClick);
     // 设置可开启提示
     immerseDom.title = "点击开启背景切换"
     // 背景图片节点
