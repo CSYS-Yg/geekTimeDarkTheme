@@ -18,7 +18,10 @@ var config = {
     // 视图距离顶部高度
     viewTopHeight: '100px',
 
-    //背景（图床地址）
+    // 退出沉浸是否刷新页面,默开启 true 
+    isReload: true,  // true（开启） / false（关闭）
+
+    //背景（图床地址），优先检测背景
     bg: 'https://gitee.com/Yx_z/figurebed/raw/master/vscode/vscode-bg.png',
     //背景颜色
     bgColor: '#121212',
@@ -61,14 +64,21 @@ var config = {
     // 下一章文章按钮边框
     rightPageBorder: '1px solid #2e2d2d',
 
-    // 某些属性只设置一次
-    first: 0
+    // 设置提交留言区边框与背景
+    commentColor: '#1d1d1c',
+    // 评论字体颜色
+    commentFontColor: '#dcdcdc',
+    // 评论边框
+    commentBorder: '1px solid #2e2d2d',
 }
 
 // immerseDom 沉浸点击 dom
 // bgImageDom 背景图片 dom
+// overallDom 整体区域内容 Dom
 // contentDom 内容节点 dom
-var appDom, immerseDom, bgImageDom, contentDom
+// commentDom 评论节点 dom
+// leaveMessageDom 留言节点 dom
+var appDom, immerseDom, bgImageDom, contentDom, commentDom, leaveMessageDom
 
 // 网页加载完成，获取页面 dom 节点
 window.onload = function () {
@@ -87,13 +97,22 @@ function getDom() {
     immerseDom.addEventListener('click', immerseClick);
     // 设置可开启提示
     immerseDom.title = "点击开启背景切换"
-    // 背景图片节点
+    // 整体滚动 div ，用于设置全屏背景图
     bgImageDom = appDom.children[0].children[1].children[1].children[0].children[0].children[1]
-    // 内容节点
-    contentDom = bgImageDom.children[0].children[0].children[0].children[0].children[2]
+    // 整体区域内容 Dom
+    textDivDom = bgImageDom.children[0].children[0].children[0].children[0]
+    // 内容区节点
+    contentDom = textDivDom.children[2]
+    // 评论区节点
+    commentDom = textDivDom.children[3]
+    // 留言区节点
+    leaveMessageDom = textDivDom.children[4]
+    console.log(commentDom)
+    console.log(leaveMessageDom)
 }
 
 function immerseClick() {
+    // 全屏
     appDom.webkitRequestFullScreen();
     // 设置背景图片
     setBgImage()
@@ -111,6 +130,8 @@ function immerseClick() {
     contentStyle()
     // 设置功能按钮
     setFeaturesButtons()
+    // 设置评论区背景
+    setCommentBg()
 }
 
 // 设置背景图片
@@ -130,8 +151,12 @@ function setBgImage(image) {
 function setContentHeight() {
     // 整体页面展示节点
     let contentDivDom = bgImageDom.children[0].children[0]
-    contentDivDom.style.maxHeight = config.viewHeight
-    contentDivDom.style.marginTop = config.viewTopHeight
+    if (config.viewHeight) {
+        contentDivDom.style.maxHeight = config.viewHeight
+    }
+    if (config.viewTopHeight) {
+        contentDivDom.style.marginTop = config.viewTopHeight
+    }
 }
 
 // 隐藏设置背景图后的出现的白边
@@ -208,6 +233,12 @@ function setFeaturesButtons() {
     dropOutImmerseDom.style.backgroundColor = config.dropOutImmerseColor
     dropOutImmerseDom.style.border = config.dropOutImmerseBorder
 
+    if (config.isReload) {
+        // 添加退出监控
+        dropOutImmerseDom.addEventListener('click', () => {
+            location.reload()
+        });
+    }
     leftPageDom.style.backgroundColor = config.leftPageColor
     leftPageDom.style.border = config.leftPageBorder
 
@@ -228,4 +259,12 @@ function setFeaturesButtons() {
             immerseClick()
         }, config.timeDelay * 1000)
     }, { once: true });
+}
+
+// 设置评论区背景色
+function setCommentBg() {
+    let commentDivDom = commentDom.children[1]
+    commentDivDom.style.backgroundColor = config.commentColor
+    commentDivDom.style.border = config.commentBorder
+    commentDivDom.children[0].style.color = config.commentFontColor
 }
