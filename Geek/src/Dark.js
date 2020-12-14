@@ -132,6 +132,10 @@ function immerseClick() {
     setFeaturesButtons()
     // 设置评论区背景
     setCommentBg()
+    let scrollDom = appDom.children[0].children[1]
+    window.onscroll = () => {
+        console.log("滚动距离");
+    }
 }
 
 // 设置背景图片
@@ -268,3 +272,5 @@ function setCommentBg() {
     commentDivDom.style.border = config.commentBorder
     commentDivDom.children[0].style.color = config.commentFontColor
 }
+
+
